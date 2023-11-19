@@ -31,7 +31,11 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [showListingsError, setShowListingsError] = useState(false);
+  const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
+
+  console.log(userListings);
 
   // Firebase Storage
 
@@ -108,7 +112,7 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: "DELETE",
       });
       const data = await res.json();
@@ -125,7 +129,7 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutStart());
-      const res = await fetch(`api/auth/signout`);
+      const res = await fetch(`/api/auth/signout`);
       const data = await res.json();
       if (data.success == false) {
         dispatch(signOutFalure(data.message));
@@ -134,6 +138,21 @@ export default function Profile() {
       dispatch(signOutSuccess(data));
     } catch (err) {
       dispatch(signOutFalure(err.message));
+    }
+  };
+
+  const handleShowListings = async () => {
+    try {
+      setShowListingsError(false);
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        setShowListingsError(data.message);
+        return;
+      }
+      setUserListings(data.listings);
+    } catch (err) {
+      setShowListingsError(err.message);
     }
   };
 
@@ -203,14 +222,17 @@ export default function Profile() {
           Create Listing
         </Link>
       </form>
-      <div className="flex justify-between mt-5">
+      <div className="flex justify-between mt-5 ">
         <span
           onClick={handleDeleteUser}
-          className="text-red-700 cursor-pointer"
+          className="bg-red-600 text-white rounded-md p-3 cursor-pointer hover:opacity-90 hover:shadow-lg"
         >
           Delete Account
         </span>
-        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+        <span
+          onClick={handleSignOut}
+          className="bg-red-600 text-white rounded-md p-3 cursor-pointer hover:opacity-90 hover:shadow-lg"
+        >
           Sign out
         </span>
       </div>
@@ -218,6 +240,50 @@ export default function Profile() {
       <p className="text-green-600 mt-5">
         {updateSuccess ? "User is updated successfully!" : ""}
       </p>
+      <button
+        onClick={handleShowListings}
+        className="w-full bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90"
+      >
+        Show listings
+      </button>
+      <p className="text-red-600 text-sm">
+        {showListingsError && showListingsError}
+      </p>
+      <div className="flex flex-col gap-3 ">
+        <h1 className="text-2xl font-semibold p-8 text-center">
+          Your Listings
+        </h1>
+        {userListings &&
+          userListings.length > 0 &&
+          userListings.map((listing) => (
+            <div
+              key={listing._id}
+              className="p-3 border flex justify-between items-center gap-4 shadow-md"
+            >
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  className="h-20 object-contain rounded"
+                  src={listing.imageUrls[0]}
+                  alt="listing image"
+                />
+              </Link>
+              <Link
+                className="text-slate-600 font-semibold flex-1 hover:underline truncate"
+                to={`/listing/${listing._id}`}
+              >
+                <p>{listing.name}</p>
+              </Link>
+              <div className="flex flex-col gap-1">
+                <button className="bg-red-600 p-1 rounded text-white hover:opacity-80">
+                  Delete
+                </button>
+                <button className="bg-yellow-600 p-1 rounded text-white hover:opacity-80">
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
