@@ -250,9 +250,11 @@ export default function Profile() {
         {showListingsError && showListingsError}
       </p>
       <div className="flex flex-col gap-3 ">
-        <h1 className="text-2xl font-semibold p-8 text-center">
-          Your Listings
-        </h1>
+        {userListings && userListings.length > 0 && (
+          <h1 className="text-2xl font-semibold p-8 text-center">
+            Your Listings
+          </h1>
+        )}
         {userListings &&
           userListings.length > 0 &&
           userListings.map((listing) => (
