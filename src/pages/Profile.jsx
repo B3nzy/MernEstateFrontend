@@ -162,8 +162,8 @@ export default function Profile() {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto flex flex-col sm:flex-row gap-4  ">
-      <div className="max-w-xl flex-1">
+    <div className="p-6 max-w-5xl mx-auto flex flex-col sm:flex-row gap-4">
+      <div className="md:max-w-md flex-1 ">
         <h1 className="text-3xl text-center font-semibold">Profile</h1>
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
           <input
@@ -175,7 +175,7 @@ export default function Profile() {
           />
           <img
             onClick={() => fileRef.current.click()}
-            className="rounded-full h-32 w-32 object-cover cursor-pointer self-center mt-5"
+            className="rounded-full h-32 w-32 object-cover cursor-pointer self-center mt-5 hover:drop-shadow-lg"
             src={formData.avatar || currentUser.avatar}
             referrerPolicy="no-referrer"
           />
@@ -230,7 +230,7 @@ export default function Profile() {
             Create Listing
           </Link>
         </form>
-        <div className="flex justify-between mt-5 ">
+        <div className="flex justify-between mt-4 ">
           <span
             onClick={handleDeleteUser}
             className="text-red-700 cursor-pointer hover:underline"
@@ -249,7 +249,7 @@ export default function Profile() {
           {updateSuccess ? "User is updated successfully!" : ""}
         </p>
       </div>
-      <div className="max-w-xl flex-1">
+      <div className="max-w-2l flex-1">
         <button
           onClick={() => {
             handleShowListings();
@@ -269,8 +269,8 @@ export default function Profile() {
             </h1>
           )}
           {zeroListing && (
-            <h1 className="text-xl font-semibold p-3 text-center text-orange-600">
-              Please create a listing first!
+            <h1 className="text-xl font-semibold p-3 text-center text-amber-600">
+              You dont have any listings yet!
             </h1>
           )}
           {userListings &&

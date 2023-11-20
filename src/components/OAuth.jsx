@@ -9,6 +9,7 @@ import {
   signInSuccess,
 } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 
 export default function OAuth() {
   const dispatch = useDispatch();
@@ -47,8 +48,9 @@ export default function OAuth() {
     <button
       onClick={handleGoogleClick}
       type="button"
-      className="bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-90"
+      className="text-red-600 p-3 rounded-lg uppercase  flex flex-row justify-center items-center gap-3 border border-red-600 hover:bg-red-600 hover:text-white hover:shadow-lg"
     >
+      <FcGoogle className="text-3xl" />
       Continue with google
     </button>
   );
