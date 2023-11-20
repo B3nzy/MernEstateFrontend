@@ -33,9 +33,8 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
+  const [zeroListing, setZeroListing] = useState(false);
   const dispatch = useDispatch();
-
-  console.log(userListings);
 
   // Firebase Storage
 
@@ -151,140 +150,160 @@ export default function Profile() {
         return;
       }
       setUserListings(data.listings);
+
+      if (data.listings.length === 0) {
+        setZeroListing(true);
+      } else {
+        setZeroListing(false);
+      }
     } catch (err) {
       setShowListingsError(err.message);
     }
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto ">
-      <h1 className="text-3xl text-center font-semibold">Profile</h1>
-      <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-        <input
-          onChange={(e) => setFile(e.target.files[0])}
-          type="file"
-          ref={fileRef}
-          hidden
-          accept="image/*"
-        />
-        <img
-          onClick={() => fileRef.current.click()}
-          className="rounded-full h-32 w-32 object-cover cursor-pointer self-center mt-5"
-          src={formData.avatar || currentUser.avatar}
-          referrerPolicy="no-referrer"
-        />
-        <p className="text-sm self-center">
-          {fileUploadError ? (
-            <span className="text-red-700">
-              Error image upload : Image must be less than 2 Mb
-            </span>
-          ) : filePercentage > 0 && filePercentage < 100 ? (
-            <span className="text-slate-700-600">{`Uploading image ${filePercentage}% done`}</span>
-          ) : filePercentage == 100 ? (
-            <span className="text-green-600">Image successfully uploaded!</span>
-          ) : (
-            ""
-          )}
+    <div className="p-6 max-w-6xl mx-auto flex flex-col sm:flex-row gap-4  ">
+      <div className="max-w-xl flex-1">
+        <h1 className="text-3xl text-center font-semibold">Profile</h1>
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+          <input
+            onChange={(e) => setFile(e.target.files[0])}
+            type="file"
+            ref={fileRef}
+            hidden
+            accept="image/*"
+          />
+          <img
+            onClick={() => fileRef.current.click()}
+            className="rounded-full h-32 w-32 object-cover cursor-pointer self-center mt-5"
+            src={formData.avatar || currentUser.avatar}
+            referrerPolicy="no-referrer"
+          />
+          <p className="text-sm self-center">
+            {fileUploadError ? (
+              <span className="text-red-700">
+                Error image upload : Image must be less than 2 Mb
+              </span>
+            ) : filePercentage > 0 && filePercentage < 100 ? (
+              <span className="text-slate-700-600">{`Uploading image ${filePercentage}% done`}</span>
+            ) : filePercentage == 100 ? (
+              <span className="text-green-600">
+                Image successfully uploaded!
+              </span>
+            ) : (
+              ""
+            )}
+          </p>
+          <input
+            type="text"
+            placeholder="username"
+            className="border p-3 rounded-lg"
+            id="username"
+            defaultValue={currentUser.username}
+            onChange={handleChange}
+          />
+          <input
+            type="email"
+            placeholder="email"
+            className="border p-3 rounded-lg"
+            id="email"
+            defaultValue={currentUser.email}
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            className="border p-3 rounded-lg"
+            id="password"
+            onChange={handleChange}
+          />
+          <button
+            disabled={loading}
+            className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-90 disabled:opacity-70"
+          >
+            {loading ? "Loading..." : "Update"}
+          </button>
+          <Link
+            className="bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90"
+            to={"/create-listing"}
+          >
+            Create Listing
+          </Link>
+        </form>
+        <div className="flex justify-between mt-5 ">
+          <span
+            onClick={handleDeleteUser}
+            className="text-red-700 cursor-pointer hover:underline"
+          >
+            Delete Account
+          </span>
+          <span
+            onClick={handleSignOut}
+            className="text-red-700 cursor-pointer hover:underline"
+          >
+            Sign out
+          </span>
+        </div>
+        <p className="text-red-700 mt-5">{error ? error : ""}</p>
+        <p className="text-green-600 mt-5">
+          {updateSuccess ? "User is updated successfully!" : ""}
         </p>
-        <input
-          type="text"
-          placeholder="username"
-          className="border p-3 rounded-lg"
-          id="username"
-          defaultValue={currentUser.username}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          placeholder="email"
-          className="border p-3 rounded-lg"
-          id="email"
-          defaultValue={currentUser.email}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          className="border p-3 rounded-lg"
-          id="password"
-          onChange={handleChange}
-        />
-        <button
-          disabled={loading}
-          className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-90 disabled:opacity-70"
-        >
-          {loading ? "Loading..." : "Update"}
-        </button>
-        <Link
-          className="bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90"
-          to={"/create-listing"}
-        >
-          Create Listing
-        </Link>
-      </form>
-      <div className="flex justify-between mt-5 ">
-        <span
-          onClick={handleDeleteUser}
-          className="bg-red-600 text-white rounded-md p-3 cursor-pointer hover:opacity-90 hover:shadow-lg"
-        >
-          Delete Account
-        </span>
-        <span
-          onClick={handleSignOut}
-          className="bg-red-600 text-white rounded-md p-3 cursor-pointer hover:opacity-90 hover:shadow-lg"
-        >
-          Sign out
-        </span>
       </div>
-      <p className="text-red-700 mt-5">{error ? error : ""}</p>
-      <p className="text-green-600 mt-5">
-        {updateSuccess ? "User is updated successfully!" : ""}
-      </p>
-      <button
-        onClick={handleShowListings}
-        className="w-full bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90"
-      >
-        Show listings
-      </button>
-      <p className="text-red-600 text-sm">
-        {showListingsError && showListingsError}
-      </p>
-      <div className="flex flex-col gap-3 ">
-        {userListings && userListings.length > 0 && (
-          <h1 className="text-2xl font-semibold p-8 text-center">
-            Your Listings
-          </h1>
-        )}
-        {userListings &&
-          userListings.length > 0 &&
-          userListings.map((listing) => (
-            <div
-              key={listing._id}
-              className="p-3 border flex justify-between items-center gap-4 shadow-md"
-            >
-              <Link to={`/listing/${listing._id}`}>
-                <img
-                  className="h-20 object-contain rounded"
-                  src={listing.imageUrls[0]}
-                  alt="listing image"
-                />
-              </Link>
-              <Link
-                className="text-slate-600 font-semibold flex-1 hover:underline truncate"
-                to={`/listing/${listing._id}`}
+      <div className="max-w-xl flex-1">
+        <button
+          onClick={() => {
+            handleShowListings();
+          }}
+          className="w-full bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90"
+        >
+          Show listings
+        </button>
+        <p className="text-red-600 text-sm my-2">
+          {showListingsError && showListingsError}
+        </p>
+
+        <div className="flex flex-col gap-3 ">
+          {userListings && userListings.length > 0 && (
+            <h1 className="text-2xl font-semibold p-8 text-center">
+              Your Listings
+            </h1>
+          )}
+          {zeroListing && (
+            <h1 className="text-xl font-semibold p-3 text-center text-orange-600">
+              Please create a listing first!
+            </h1>
+          )}
+          {userListings &&
+            userListings.length > 0 &&
+            userListings.map((listing) => (
+              <div
+                key={listing._id}
+                className="p-3 border flex justify-between items-center gap-4 shadow-md"
               >
-                <p>{listing.name}</p>
-              </Link>
-              <div className="flex flex-col gap-1">
-                <button className="bg-red-600 p-1 rounded text-white hover:opacity-80">
-                  Delete
-                </button>
-                <button className="bg-yellow-600 p-1 rounded text-white hover:opacity-80">
-                  Edit
-                </button>
+                <Link to={`/listing/${listing._id}`}>
+                  <img
+                    className="h-20 object-contain rounded"
+                    src={listing.imageUrls[0]}
+                    alt="listing image"
+                  />
+                </Link>
+                <Link
+                  className="text-slate-600 font-semibold flex-1 hover:underline truncate"
+                  to={`/listing/${listing._id}`}
+                >
+                  <p>{listing.name}</p>
+                </Link>
+                <div className="flex flex-col gap-1">
+                  <button className="bg-red-600 p-1 rounded text-white hover:opacity-80">
+                    Delete
+                  </button>
+                  <button className="bg-yellow-600 p-1 rounded text-white hover:opacity-80">
+                    Edit
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
     </div>
   );
