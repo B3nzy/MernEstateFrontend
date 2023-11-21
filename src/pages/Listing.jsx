@@ -6,6 +6,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
+import { IoLocationSharp } from "react-icons/io5";
+import { GiBed } from "react-icons/gi";
+import { GiBathtub } from "react-icons/gi";
+import { LuParkingCircle } from "react-icons/lu";
+import { FaCouch } from "react-icons/fa";
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
@@ -50,8 +55,8 @@ export default function Listing() {
       )}
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {listing && !loading && !error && (
-        <>
-          <Swiper navigation>
+        <div className="">
+          <Swiper className="shadow-lg" navigation>
             {listing.imageUrls.map((url, index) => (
               <SwiperSlide key={url}>
                 <div
@@ -64,7 +69,52 @@ export default function Listing() {
               </SwiperSlide>
             ))}
           </Swiper>
-        </>
+          <div className="max-w-5xl mx-auto p-3 gap-4 my-10">
+            <h1 className="text-3xl font-semibold my-2">{listing.name}</h1>
+            <div className="flex flex-row items-center gap-1 text-lg my-5">
+              <p className="text-green-600">
+                <IoLocationSharp />
+              </p>
+              <p className="text-slate-700">{listing.address}</p>
+            </div>
+            <div className="flex flex-row flex-wrap text-center gap-5">
+              <div className="bg-yellow-600 w-40 rounded p-2 font-semibold shadow-lg">
+                For {listing.type === "rent" ? "Rent" : "Sell"}
+              </div>
+              {listing.discountPrice > 0 && listing.offer && (
+                <div className="bg-lime-600 w-40 rounded p-2 font-semibold shadow-lg">
+                  Discount : ${listing.discountPrice}
+                </div>
+              )}
+            </div>
+            <p className="my-4">
+              <span className="font-semibold">Description : </span>
+              {listing.description}
+            </p>
+            <div className="flex flex-row flex-wrap text-center gap-x-8 gap-y-1 font-semibold">
+              <div className="text-emerald-700 flex flex-row items-center gap-1">
+                <GiBed />
+                {listing.bedrooms} Bed
+              </div>
+              <div className="text-emerald-700 flex flex-row items-center gap-1">
+                <GiBathtub />
+                {listing.bathrooms} Baths
+              </div>
+              {listing.parking && (
+                <div className="text-emerald-700 flex flex-row items-center gap-1">
+                  <LuParkingCircle />
+                  Parking
+                </div>
+              )}
+              {listing.furnished && (
+                <div className="text-emerald-700 flex flex-row items-center gap-1">
+                  <FaCouch />
+                  Furnished
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
