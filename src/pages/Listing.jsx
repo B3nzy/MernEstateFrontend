@@ -11,12 +11,16 @@ import { GiBed } from "react-icons/gi";
 import { GiBathtub } from "react-icons/gi";
 import { LuParkingCircle } from "react-icons/lu";
 import { FaCouch } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import Contact from "../components/Contact";
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
+  const { currentUser } = useSelector((state) => state.user);
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [contact, setContact] = useState(false);
 
   const params = useParams();
 
@@ -113,6 +117,17 @@ export default function Listing() {
                 </div>
               )}
             </div>
+            {/* TODO : Need to add price of the property somewhere. Note it could be sell or rent. */}
+            {console.log(listing)}
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button
+                className="bg-slate-600 text-white rounded-lg uppercase hover:opacity-90 p-3 w-full my-10 hover:shadow-lg"
+                onClick={() => setContact(true)}
+              >
+                Contact landlord
+              </button>
+            )}
+            {contact && <Contact listing={listing} />}
           </div>
         </div>
       )}
