@@ -22,6 +22,7 @@ import {
   updateUserSuccess,
 } from "../redux/user/userSlice";
 import { Link } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 export default function Profile() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -34,6 +35,7 @@ export default function Profile() {
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
   const [zeroListing, setZeroListing] = useState(false);
+  const [listingLoading, setListingLoading] = useState(false);
   const dispatch = useDispatch();
 
   // Firebase Storage
@@ -142,6 +144,7 @@ export default function Profile() {
 
   const handleShowListings = async () => {
     try {
+      setListingLoading(true);
       setShowListingsError(false);
       const res = await fetch(`/api/user/listings/${currentUser._id}`);
       const data = await res.json();
@@ -150,13 +153,14 @@ export default function Profile() {
         return;
       }
       setUserListings(data.listings);
-
+      setListingLoading(false);
       if (data.listings.length === 0) {
         setZeroListing(true);
       } else {
         setZeroListing(false);
       }
     } catch (err) {
+      setListingLoading(false);
       setShowListingsError(err.message);
     }
   };
@@ -271,9 +275,10 @@ export default function Profile() {
           onClick={() => {
             handleShowListings();
           }}
-          className="w-full bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90 hover:shadow-lg"
+          className="w-full bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90 hover:shadow-lg disabled:opacity-70"
+          disabled={listingLoading}
         >
-          Show listings
+          {listingLoading ? "Loading listings..." : "Show listings"}
         </button>
         <p className="text-red-600 text-sm my-2">
           {showListingsError && showListingsError}
@@ -290,8 +295,18 @@ export default function Profile() {
               You dont have any listings yet!
             </h1>
           )}
+          {listingLoading && (
+            <ReactLoading
+              type={"spinningBubbles"}
+              color={"#2B2A4C"}
+              height={120}
+              width={120}
+              className="mx-auto my-16"
+            />
+          )}
           {userListings &&
             userListings.length > 0 &&
+            listingLoading === false &&
             userListings.map((listing) => (
               <div
                 key={listing._id}
