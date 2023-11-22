@@ -8,6 +8,7 @@ import {
 import React, { useState } from "react";
 import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { MdUpload } from "react-icons/md";
 
 export default function CreateListing() {
   const [files, setFiles] = useState([]);
@@ -348,8 +349,9 @@ export default function CreateListing() {
               onClick={handleImageSubmit}
               disabled={uploading}
               type="button"
-              className="p-3 text-green-600 border border-green-600 rounded uppercase hover:shadow-lg disabled:opacity-70"
+              className="p-3 text-green-600 border border-green-600 rounded uppercase hover:shadow-lg disabled:opacity-70 flex flex-row items-center gap-2"
             >
+              <MdUpload className="text-xl" />
               {uploading ? "Uploading..." : "Upload"}
             </button>
           </div>

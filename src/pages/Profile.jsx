@@ -241,12 +241,6 @@ export default function Profile() {
           >
             {loading ? "Loading..." : "Update"}
           </button>
-          <Link
-            className="bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90"
-            to={"/create-listing"}
-          >
-            Create Listing
-          </Link>
         </form>
         <div className="flex justify-between mt-4 ">
           <span
@@ -268,11 +262,16 @@ export default function Profile() {
         </p>
       </div>
       <div className="max-w-2l flex-1">
+        <Link className="" to={"/create-listing"}>
+          <div className="w-full my-5 border p-3 rounded-lg text-center text-lime-600 border-lime-600 hover:bg-lime-600 hover:text-white hover:shadow-lg uppercase">
+            Create Listing
+          </div>
+        </Link>
         <button
           onClick={() => {
             handleShowListings();
           }}
-          className="w-full bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90"
+          className="w-full bg-green-600 text-white p-3 rounded-lg uppercase text-center hover:opacity-90 hover:shadow-lg"
         >
           Show listings
         </button>
