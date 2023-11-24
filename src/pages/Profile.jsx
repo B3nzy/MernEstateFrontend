@@ -36,6 +36,7 @@ export default function Profile() {
   const [userListings, setUserListings] = useState([]);
   const [zeroListing, setZeroListing] = useState(false);
   const [listingLoading, setListingLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const dispatch = useDispatch();
 
   // Firebase Storage
@@ -167,6 +168,7 @@ export default function Profile() {
 
   const handleListingDelete = async (listingId) => {
     try {
+      setDeleteLoading(listingId);
       const res = await fetch(`/api/listing/delete/${listingId}`, {
         method: "DELETE",
       });
@@ -176,9 +178,11 @@ export default function Profile() {
         return;
       }
       // Getting updated data from the server.
+      setDeleteLoading(false);
       handleShowListings();
       // we can filter the UserListings as well.
     } catch (err) {
+      setDeleteLoading(false);
       console.log(err);
     }
   };
@@ -328,7 +332,8 @@ export default function Profile() {
                 <div className="flex flex-col gap-1">
                   <button
                     onClick={() => handleListingDelete(listing._id)}
-                    className="bg-red-600 p-1 rounded text-white hover:opacity-80"
+                    className="bg-red-600 p-1 rounded text-white hover:opacity-80 disabled:opacity-70"
+                    disabled={deleteLoading === listing._id}
                   >
                     Delete
                   </button>
