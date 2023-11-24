@@ -13,6 +13,7 @@ import { LuParkingCircle } from "react-icons/lu";
 import { FaCouch } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import Contact from "../components/Contact";
+import { FaDollarSign } from "react-icons/fa6";
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
@@ -44,7 +45,7 @@ export default function Listing() {
         setError(err.message);
       }
     })();
-  }, []);
+  }, [params.listingId]);
 
   return (
     <div>
@@ -58,6 +59,7 @@ export default function Listing() {
         />
       )}
       {error && <p className="text-red-500 text-sm">{error}</p>}
+
       {listing && !loading && !error && (
         <div className="">
           <Swiper className="shadow-lg" navigation>
@@ -74,13 +76,21 @@ export default function Listing() {
             ))}
           </Swiper>
           <div className="max-w-5xl mx-auto p-3 gap-4 my-10">
-            <h1 className="text-3xl font-semibold my-2">{listing.name}</h1>
+            <div className="flex flex-row justify-between flex-wrap">
+              <h1 className="text-3xl font-semibold my-2">{listing.name}</h1>
+              <div className="flex flex-row items-center text-xl text-slate-600 border border-slate-400 p-3 shadow-md">
+                <span className="mx-2">Price :</span>
+                <FaDollarSign />
+                {listing.regularPrice}
+              </div>
+            </div>
             <div className="flex flex-row items-center gap-1 text-lg my-5">
               <p className="text-green-600">
                 <IoLocationSharp />
               </p>
               <p className="text-slate-700">{listing.address}</p>
             </div>
+
             <div className="flex flex-row flex-wrap text-center gap-5">
               <div className="bg-yellow-600 w-40 rounded p-2 font-semibold shadow-lg">
                 For {listing.type === "rent" ? "Rent" : "Sell"}
@@ -117,11 +127,9 @@ export default function Listing() {
                 </div>
               )}
             </div>
-            {/* TODO : Need to add price of the property somewhere. Note it could be sell or rent. */}
-            {console.log(listing)}
             {currentUser && listing.userRef !== currentUser._id && !contact && (
               <button
-                className="bg-slate-600 text-white rounded-lg uppercase hover:opacity-90 p-3 w-full my-10 hover:shadow-lg"
+                className="bg-slate-600 text-white rounded-lg uppercase hover:opacity-90 p-3 w-full my-6 hover:shadow-lg"
                 onClick={() => setContact(true)}
               >
                 Contact landlord
