@@ -81,7 +81,8 @@ export default function Listing() {
               <div className="flex flex-row items-center text-xl text-slate-600 border border-slate-400 p-3 shadow-md">
                 <span className="mx-2">Price :</span>
                 <FaDollarSign />
-                {listing.regularPrice}
+                {listing.regularPrice}{" "}
+                {listing.type === "rent" ? "/ Month" : ""}
               </div>
             </div>
             <div className="flex flex-row items-center gap-1 text-lg my-5">

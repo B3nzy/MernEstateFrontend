@@ -9,8 +9,6 @@ export default function Header() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  console.log(searchTerm);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
@@ -22,11 +20,10 @@ export default function Header() {
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get("searchTerm");
-    console.log(searchTermFromUrl);
     if (searchTermFromUrl) {
       setSearchTerm(searchTermFromUrl);
     }
-  }, []);
+  }, [location.search]);
 
   return (
     <header className="bg-slate-200 shadow-md">
