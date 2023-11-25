@@ -2,8 +2,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactLoading from "react-loading";
+import ListingItem from "../components/ListingItem";
 
 export default function Search() {
+  const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sideBarData, setSideBarData] = useState({
     searchTerm: "",
@@ -106,6 +109,7 @@ export default function Search() {
           setLoading(false);
         }
         setLoading(false);
+        setListings(data.listings);
         console.log(data);
       } catch (err) {
         setLoading(false);
@@ -214,10 +218,33 @@ export default function Search() {
           </button>
         </form>
       </div>
-      <div className="">
+      <div className="w-full">
         <h1 className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
-          Listing Results :{" "}
+          Listing results :{" "}
         </h1>
+        <div className="p-7">
+          {loading && (
+            <ReactLoading
+              type={"spinningBubbles"}
+              color={"#2B2A4C"}
+              height={120}
+              width={120}
+              className="mx-auto my-16"
+            />
+          )}
+          {!loading && listings.length === 0 && (
+            <p className="text-xl text-slate-600 text-center">
+              No listing found!
+            </p>
+          )}
+          <div className="flex flex-row flex-wrap gap-4">
+            {!loading &&
+              listings &&
+              listings.map((listing, index) => (
+                <ListingItem key={listing._id} listing={listing} />
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );

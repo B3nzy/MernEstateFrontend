@@ -81,7 +81,7 @@ export default function Listing() {
               <div className="flex flex-row items-center text-xl text-slate-600 border border-slate-400 p-3 shadow-md">
                 <span className="mx-2">Price :</span>
                 <FaDollarSign />
-                {listing.regularPrice}{" "}
+                {listing.regularPrice.toLocaleString("en-US")}{" "}
                 {listing.type === "rent" ? "/ Month" : ""}
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function Listing() {
               </div>
               {listing.discountPrice > 0 && listing.offer && (
                 <div className="bg-lime-600 w-40 rounded p-2 font-semibold shadow-lg">
-                  Discount : ${listing.discountPrice}
+                  Discount : ${listing.discountPrice.toLocaleString("en-US")}
                 </div>
               )}
             </div>
@@ -109,7 +109,7 @@ export default function Listing() {
             <div className="flex flex-row flex-wrap text-center gap-x-8 gap-y-1 font-semibold">
               <div className="text-emerald-700 flex flex-row items-center gap-1">
                 <GiBed />
-                {listing.bedrooms} Bed
+                {listing.bedrooms} Beds
               </div>
               <div className="text-emerald-700 flex flex-row items-center gap-1">
                 <GiBathtub />
