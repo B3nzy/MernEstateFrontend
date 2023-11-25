@@ -32,7 +32,7 @@ export default function Header() {
     <header className="bg-slate-200 shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
-          <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
+          <h1 className="font-bold text-sm sm:text-xl flex flex-wrap transition ease-in-out hover:scale-110 duration-300">
             <span className="text-slate-500">Sunrise</span>
             <span className="text-slate-700">Estate</span>
           </h1>
@@ -64,7 +64,7 @@ export default function Header() {
           <Link to="/profile">
             {currentUser ? (
               <img
-                className="rounded-full h-10 w-10 object-cover"
+                className="rounded-full h-10 w-10 object-cover transition ease-in-out hover:scale-110 duration-300"
                 src={currentUser.avatar}
                 referrerPolicy="no-referrer"
               />

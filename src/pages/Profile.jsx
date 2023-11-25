@@ -201,7 +201,7 @@ export default function Profile() {
           />
           <img
             onClick={() => fileRef.current.click()}
-            className="rounded-full h-32 w-32 object-cover cursor-pointer self-center mt-5 hover:drop-shadow-lg"
+            className="rounded-full h-32 w-32 object-cover cursor-pointer self-center mt-5 hover:drop-shadow-lg transition ease-in-out hover:scale-105 duration-300"
             src={formData.avatar || currentUser.avatar}
             referrerPolicy="no-referrer"
           />
