@@ -247,7 +247,7 @@ export default function Search() {
               <option value="createdAt_asc">Oldest</option>
             </select>
           </label>
-          <button className="text-slate-700 p-3 border border-slate-400 rounded-lg uppercase hover:bg-slate-600 hover:text-white hover:shadow-lg transition ease-in-out hover:scale-105 duration-200">
+          <button className="text-white p-3 border bg-slate-600 rounded-lg uppercase hover:shadow-xl">
             Search
           </button>
         </form>
