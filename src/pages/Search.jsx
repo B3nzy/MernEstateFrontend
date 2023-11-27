@@ -48,7 +48,7 @@ export default function Search() {
           e.target.checked || e.target.checked === "true" ? true : false,
       });
     } else if (e.target.id === "sort_order") {
-      const sort = e.target.value.split("_")[0] || "createdAT";
+      const sort = e.target.value.split("_")[0] || "createdAt";
       const order = e.target.value.split("_")[1] || "desc";
       setSideBarData({
         ...sideBarData,
@@ -153,7 +153,7 @@ export default function Search() {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="p-7 border-b-2 md:border-r-2 md:min-h-screen">
+      <div className="p-7 border-b-2 md:min-h-screen md:sticky md:top-20 md:h-screen">
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           <label className="flex flex-row whitespace-nowrap items-center gap-2">
             {" "}
@@ -252,7 +252,7 @@ export default function Search() {
           </button>
         </form>
       </div>
-      <div className="w-full">
+      <div className="w-full md:border-l-2">
         <h1 className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
           Listing results :{" "}
         </h1>
